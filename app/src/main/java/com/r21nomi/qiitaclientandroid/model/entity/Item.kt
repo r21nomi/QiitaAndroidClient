@@ -13,8 +13,9 @@ class Item {
     var updated_at: String
     var tags: List<Tag>
     var url: String
+    var user: User
 
-    constructor(coediting: Boolean, created_at: String, id: String, rendered_body: String, tags: List<Tag>, title: String, updated_at: String, url: String) {
+    constructor(coediting: Boolean, created_at: String, id: String, rendered_body: String, tags: List<Tag>, title: String, updated_at: String, url: String, user: User) {
         this.coediting = coediting
         this.created_at = created_at
         this.id = id
@@ -23,5 +24,6 @@ class Item {
         this.title = title
         this.updated_at = updated_at
         this.url = url
+        this.user = user
     }
 }

@@ -6,19 +6,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.ItemStyle">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+    <style name="AppTheme.ItemThumbStyle">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
     </style>
 
-    <style name="AppTheme.ItemStyle.Title">
+    <style name="AppTheme.ItemTextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AppTheme.ItemTextStyle.Title">
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="AppTheme.ItemStyle.Body">
+    <style name="AppTheme.ItemTextStyle.Body">
         <item name="android:textSize">12sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>

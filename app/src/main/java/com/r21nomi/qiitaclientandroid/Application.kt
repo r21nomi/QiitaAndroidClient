@@ -1,6 +1,7 @@
 package com.r21nomi.qiitaclientandroid
 
 import android.app.Application
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.module.ApplicationModule
@@ -17,6 +18,7 @@ open class Application: Application() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
+        Fresco.initialize(this)
 
         initInjector()
     }

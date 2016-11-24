@@ -1,6 +1,7 @@
 package com.r21nomi.qiitaclientandroid.ui.adapter
 
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,7 +20,11 @@ class ItemBinder(dataBindAdapter: DataBindAdapter) : DataBinder<ItemBinder.ViewH
     private var dataSet: MutableList<Item> = ArrayList()
 
     override fun bindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.item = dataSet[position]
+        val item: Item = dataSet[position]
+        holder.binding.item = item
+
+        val uri = Uri.parse(item.user.profile_image_url)
+        holder.binding.thumb.setImageURI(uri, null)
     }
 
     override fun getItemCount(): Int {
