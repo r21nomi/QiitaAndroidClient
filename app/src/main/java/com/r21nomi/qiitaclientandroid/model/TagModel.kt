@@ -2,7 +2,7 @@ package com.r21nomi.qiitaclientandroid.model
 
 import android.content.Context
 import com.r21nomi.qiitaclientandroid.model.api.ApiClient
-import com.r21nomi.qiitaclientandroid.model.entity.Tag2
+import com.r21nomi.qiitaclientandroid.model.entity.Tag
 import rx.Observable
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class TagModel {
         this.apiClient = apiClient
     }
 
-    fun getTags(): Observable<List<Tag2>> {
+    fun getTags(): Observable<List<Tag>> {
         return apiClient
                 .getTags(1, 20, "count")
                 .subscribeOn(Schedulers.io())

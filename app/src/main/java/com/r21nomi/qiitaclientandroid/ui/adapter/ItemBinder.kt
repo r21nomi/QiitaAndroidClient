@@ -44,8 +44,7 @@ class ItemBinder(dataBindAdapter: DataBindAdapter,
         return ViewHolder(binding)
     }
 
-    fun setDataSet(dataSet: List<Item>) {
-        this.dataSet.clear()
+    fun addDataSet(dataSet: List<Item>) {
         this.dataSet.addAll(dataSet)
     }
 

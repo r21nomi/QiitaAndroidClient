@@ -11,9 +11,11 @@ import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.model.ItemModel
 import com.r21nomi.qiitaclientandroid.model.TagModel
 import com.r21nomi.qiitaclientandroid.model.entity.Item
+import com.r21nomi.qiitaclientandroid.ui.adapter.InfiniteScrollRecyclerListener
 import com.r21nomi.qiitaclientandroid.ui.adapter.ItemBinder
 import com.r21nomi.qiitaclientandroid.ui.adapter.decoration.DividerItemDecoration
 import com.yqritc.recyclerviewmultipleviewtypesadapter.ListBindAdapter
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,13 +27,14 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var itemModel: ItemModel
 
-    var currentPage: Int = 1
-    var binding: ActivityMainBinding? = null
-    var recyclerView: RecyclerView? = null
-    var itemBinder: ItemBinder? = null
-    val adapter: ListBindAdapter = ListBindAdapter()
+    private var currentPage: Int = 1
+    private var subscription: Subscription? = null
+    private var binding: ActivityMainBinding? = null
+    private var recyclerView: RecyclerView? = null
+    private var itemBinder: ItemBinder? = null
+    private val adapter: ListBindAdapter = ListBindAdapter()
 
-    val itemOnClick: (View, Item) -> Unit = { view, item ->
+    private val itemOnClick: (View, Item) -> Unit = { view, item ->
         startActivity(DetailActivity.createIntent(this, item.url))
     }
 
@@ -51,20 +54,37 @@ class MainActivity : BaseActivity() {
 
         adapter.addBinder(itemBinder)
 
+        val layoutManager = LinearLayoutManager(this)
+
         recyclerView?.setHasFixedSize(false)
-        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = adapter
         recyclerView?.addItemDecoration(DividerItemDecoration(this))
+        recyclerView?.addOnScrollListener(object : InfiniteScrollRecyclerListener(layoutManager) {
+            override fun onLoadMore(page: Int, totalItemCount: Int) {
+                fetchItems()
+            }
+        })
 
-        itemModel
-                .getItems(currentPage, 20, "openframeworks")
+        fetchItems()
+    }
+
+    private fun fetchItems() {
+        if (subscription != null && !subscription!!.isUnsubscribed) {
+            Timber.d("Do nothing since now fetching...")
+            return
+        }
+        subscription = itemModel
+                .getItems(currentPage, 20, "android")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ items ->
                     Timber.d(items[0].rendered_body)
-                    itemBinder?.setDataSet(items)
+                    itemBinder?.addDataSet(items)
                     itemBinder?.notifyBinderDataSetChanged()
 
                     currentPage++
                 })
+
+        subscriptionsOnDestroy?.add(subscription)
     }
 }

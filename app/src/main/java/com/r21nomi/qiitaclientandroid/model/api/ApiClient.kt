@@ -1,7 +1,7 @@
 package com.r21nomi.qiitaclientandroid.model.api
 
 import com.r21nomi.qiitaclientandroid.model.entity.Item
-import com.r21nomi.qiitaclientandroid.model.entity.Tag2
+import com.r21nomi.qiitaclientandroid.model.entity.Tag
 import retrofit2.http.GET
 import retrofit2.http.Query
 import rx.Observable
@@ -23,5 +23,5 @@ interface ApiClient {
             @Query("page") page: Int,
             @Query("per_page") perPage: Int,
             @Query("sort") sort: String
-    ): Observable<List<Tag2>>
+    ): Observable<List<Tag>>
 }

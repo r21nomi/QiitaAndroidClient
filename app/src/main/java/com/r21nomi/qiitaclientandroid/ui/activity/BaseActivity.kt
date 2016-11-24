@@ -7,10 +7,13 @@ import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerActivityComponent
 import com.r21nomi.qiitaclientandroid.di.module.ActivityModule
+import rx.subscriptions.CompositeSubscription
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    var activityComponent: ActivityComponent? = null
+    private var activityComponent: ActivityComponent? = null
+
+    protected var subscriptionsOnDestroy: CompositeSubscription? = null
 
     protected abstract fun injectDependency(component: ActivityComponent)
 
@@ -27,5 +30,10 @@ abstract class BaseActivity: AppCompatActivity() {
 
     fun getApplicationComponent(): ApplicationComponent {
         return (application as Application).applicationComponent!!
+    }
+
+    override fun onDestroy() {
+        subscriptionsOnDestroy?.unsubscribe()
+        super.onDestroy()
     }
 }
