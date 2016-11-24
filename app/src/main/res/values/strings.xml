@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">QiitaClientAndroid</string>
+    <string name="font_thin" translatable="false">fonts/mplus-1c-thin.ttf</string>
+    <string name="font_light" translatable="false">fonts/mplus-1c-light.ttf</string>
+    <string name="font_bold" translatable="false">fonts/texgyreadventor-bold.otf</string>
+    <string name="api_endpoint">http://qiita.com/api/</string>
+    <string name="access_token">ffd57ac06863d25af10a2bf533d6bed6108a87e3</string>
+</resources>
