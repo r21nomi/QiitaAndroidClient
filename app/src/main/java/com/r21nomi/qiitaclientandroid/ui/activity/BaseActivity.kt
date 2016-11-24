@@ -1,4 +1,4 @@
-package com.r21nomi.qiitaclientandroid.ui
+package com.r21nomi.qiitaclientandroid.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

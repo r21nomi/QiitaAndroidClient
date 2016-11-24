@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.databinding.ItemViewholderBinding
@@ -15,7 +16,8 @@ import java.util.*
 /**
  * Created by Ryota Niinomi on 2016/11/24.
  */
-class ItemBinder(dataBindAdapter: DataBindAdapter) : DataBinder<ItemBinder.ViewHolder>(dataBindAdapter) {
+class ItemBinder(dataBindAdapter: DataBindAdapter,
+                 private val itemOnClick: ((View, Item) -> Unit)) : DataBinder<ItemBinder.ViewHolder>(dataBindAdapter) {
 
     private var dataSet: MutableList<Item> = ArrayList()
 
@@ -25,6 +27,10 @@ class ItemBinder(dataBindAdapter: DataBindAdapter) : DataBinder<ItemBinder.ViewH
 
         val uri = Uri.parse(item.user.profile_image_url)
         holder.binding.thumb.setImageURI(uri, null)
+
+        holder.binding.root.setOnClickListener { view ->
+            itemOnClick.invoke(view, item)
+        }
     }
 
     override fun getItemCount(): Int {

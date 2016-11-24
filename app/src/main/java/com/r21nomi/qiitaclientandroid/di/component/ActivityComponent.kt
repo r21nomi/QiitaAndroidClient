@@ -1,8 +1,9 @@
 package com.r21nomi.qiitaclientandroid.di.component
 
-import com.r21nomi.qiitaclientandroid.di.module.ActivityModule
 import com.r21nomi.qiitaclientandroid.di.ActivityScope
-import com.r21nomi.qiitaclientandroid.ui.MainActivity
+import com.r21nomi.qiitaclientandroid.di.module.ActivityModule
+import com.r21nomi.qiitaclientandroid.ui.activity.DetailActivity
+import com.r21nomi.qiitaclientandroid.ui.activity.MainActivity
 import dagger.Component
 
 /**
@@ -15,4 +16,5 @@ import dagger.Component
 )
 interface ActivityComponent {
     fun inject(activity: MainActivity)
+    fun inject(activity: DetailActivity)
 }
