@@ -10,6 +10,7 @@ import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.model.ItemModel
 import com.r21nomi.qiitaclientandroid.model.TagModel
 import com.r21nomi.qiitaclientandroid.ui.adapter.ItemBinder
+import com.r21nomi.qiitaclientandroid.ui.adapter.decoration.DividerItemDecoration
 import com.yqritc.recyclerviewmultipleviewtypesadapter.ListBindAdapter
 import rx.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -44,14 +45,7 @@ class MainActivity : BaseActivity() {
         recyclerView?.setHasFixedSize(false)
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = adapter
-
-//        tagModel
-//                .getTags()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({tags ->
-//                    Log.d("hogehoge", "size : " + tags.size)
-//                    binding?.tag2 = tags[0]
-//                })
+        recyclerView?.addItemDecoration(DividerItemDecoration(this))
 
         itemModel
                 .getItems(1, 20, "openframeworks")
