@@ -8,14 +8,16 @@ import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.databinding.ActivityLoginBinding
 import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.model.LoginModel
+import com.r21nomi.qiitaclientandroid.util.ViewUtil
 import rx.android.schedulers.AndroidSchedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity() {
 
     @Inject
     lateinit var loginModel: LoginModel
+
+    private lateinit var binding: ActivityLoginBinding
 
     override fun injectDependency(component: ActivityComponent) {
         component.inject(this)
@@ -25,7 +27,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         binding.loginButton.setOnClickListener {
             val accessToken = LoginModel.getAccessToken(this)
@@ -54,7 +56,7 @@ class LoginActivity : BaseActivity() {
                     .subscribe({ accessToken ->
                         startMainActivity()
                     }, { throwable ->
-                        Timber.e(throwable, throwable.message)
+                        ViewUtil.showSnackBar(this, throwable.message ?: return@subscribe)
                     })
         } else {
             super.onActivityResult(requestCode, resultCode, data)

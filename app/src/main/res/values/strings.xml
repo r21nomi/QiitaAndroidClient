@@ -10,6 +10,7 @@
     <string name="oauth_redirect_url" translatable="false">https://github.com/r21nomi</string>
     <string name="default_access_token" translatable="false">ffd57ac06863d25af10a2bf533d6bed6108a87e3</string>
 
+    <string name="error" translatable="false">エラーが発生しました。時間をおいてから再度お試しください。</string>
     <string name="login_button_label" translatable="false">ログインしてはじめる</string>
     <string name="start_button_label" translatable="false">今すぐはじめる</string>
 </resources>

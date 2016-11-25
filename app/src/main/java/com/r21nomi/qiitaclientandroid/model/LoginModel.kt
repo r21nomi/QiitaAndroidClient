@@ -6,6 +6,7 @@ import com.r21nomi.qiitaclientandroid.model.api.ApiClient
 import com.r21nomi.qiitaclientandroid.util.ApiUtil
 import rx.Observable
 import rx.schedulers.Schedulers
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,6 +49,10 @@ class LoginModel {
                         code
                 )
                 .subscribeOn(Schedulers.io())
+                .onErrorReturn { throwable ->
+                    Timber.e(throwable, throwable.message)
+                    throw IllegalStateException(context.resources.getString(R.string.error))
+                }
                 .map { authInfo ->
                     LoginModel.setAccessToken(context, authInfo.token)
                     return@map authInfo.token

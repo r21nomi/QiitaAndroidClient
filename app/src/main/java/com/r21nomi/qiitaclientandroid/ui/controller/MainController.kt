@@ -17,6 +17,7 @@ import com.r21nomi.qiitaclientandroid.model.entity.Item
 import com.r21nomi.qiitaclientandroid.ui.activity.DetailActivity
 import com.r21nomi.qiitaclientandroid.ui.adapter.InfiniteScrollRecyclerListener
 import com.r21nomi.qiitaclientandroid.ui.adapter.ItemBinder
+import com.r21nomi.qiitaclientandroid.util.ViewUtil
 import com.yqritc.recyclerviewmultipleviewtypesadapter.ListBindAdapter
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -41,7 +42,7 @@ class MainController : BaseController() {
     private var progressBar: ProgressBar? = null
     private var itemBinder: ItemBinder? = null
     private val adapter: ListBindAdapter = ListBindAdapter()
-    private var binding: ControllerMainBinding? = null
+    private lateinit var binding: ControllerMainBinding
 
     override fun getLayout(): Int {
         return R.layout.controller_main
@@ -60,8 +61,8 @@ class MainController : BaseController() {
 
         binding = DataBindingUtil.bind(view)
 
-        recyclerView = binding?.recyclerView
-        progressBar = binding?.progressBar
+        recyclerView = binding.recyclerView
+        progressBar = binding.progressBar
         currentPage = 1
         itemBinder = ItemBinder(adapter, itemOnClick)
 
@@ -94,7 +95,7 @@ class MainController : BaseController() {
         }
         progressBar?.visibility = View.VISIBLE
         subscription = itemModel
-                .getItems(currentPage, LIMIT, "android")
+                .fetchItems(currentPage, LIMIT, "android")
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnTerminate { progressBar?.visibility = View.GONE }
                 .subscribe({ items ->
@@ -104,7 +105,10 @@ class MainController : BaseController() {
 
                     currentPage++
                 }, { throwable ->
-                    Timber.e(throwable, throwable.message)
+                    ViewUtil.showSnackBar(
+                            activity ?: return@subscribe,
+                            throwable.message ?: return@subscribe
+                    )
                 })
 
         subscriptionsOnDestroy?.add(subscription)
