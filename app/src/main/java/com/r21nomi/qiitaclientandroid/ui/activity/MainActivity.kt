@@ -24,17 +24,28 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val rootView = binding.rootView ?: return
 
-        router = Conductor.attachRouter(this, rootView, savedInstanceState)
-        if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(MainController()))
-        }
+        initToolbar()
+        initContent(savedInstanceState)
     }
 
     override fun onBackPressed() {
         if (!router.handleBack()) {
             super.onBackPressed()
+        }
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setTitle(R.string.app_name)
+    }
+
+    private fun  initContent(savedInstanceState: Bundle?) {
+        val rootView = binding.rootView ?: return
+
+        router = Conductor.attachRouter(this, rootView, savedInstanceState)
+        if (!router.hasRootController()) {
+            router.setRoot(RouterTransaction.with(MainController()))
         }
     }
 }
