@@ -24,9 +24,9 @@ class TagModel {
         this.apiClient = apiClient
     }
 
-    fun fetchTags(): Observable<List<Tag>> {
+    fun fetchTags(page: Int, count: Int): Observable<List<Tag>> {
         return apiClient
-                .getTags(1, 20, "count")
+                .getTags(page, count, "count")
                 .subscribeOn(Schedulers.io())
                 .onErrorReturn { throwable ->
                     Timber.e(throwable, throwable.message)

@@ -3,6 +3,7 @@ package com.r21nomi.qiitaclientandroid.di.component
 import com.r21nomi.qiitaclientandroid.di.ControllerScope
 import com.r21nomi.qiitaclientandroid.di.module.ControllerModule
 import com.r21nomi.qiitaclientandroid.ui.controller.MainController
+import com.r21nomi.qiitaclientandroid.ui.controller.TagsController
 import dagger.Component
 
 /**
@@ -15,4 +16,5 @@ import dagger.Component
 )
 interface ControllerComponent {
     fun inject(controller: MainController)
+    fun inject(controller: TagsController)
 }
