@@ -7,6 +7,4 @@
     <color name="colorPrimary">@color/green</color>
     <color name="colorPrimaryDark">@color/green</color>
     <color name="colorAccent">#FF4081</color>
-
-    <color name="login_background_mask">#aa000000</color>
 </resources>

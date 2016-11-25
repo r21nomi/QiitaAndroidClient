@@ -4,9 +4,11 @@ import android.databinding.DataBindingUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.databinding.ControllerMainBinding
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
@@ -36,6 +38,7 @@ class MainController : BaseController() {
     private var currentPage: Int = 1
     private var subscription: Subscription? = null
     private var recyclerView: RecyclerView? = null
+    private var progressBar: ProgressBar? = null
     private var itemBinder: ItemBinder? = null
     private val adapter: ListBindAdapter = ListBindAdapter()
     private var binding: ControllerMainBinding? = null
@@ -58,6 +61,7 @@ class MainController : BaseController() {
         binding = DataBindingUtil.bind(view)
 
         recyclerView = binding?.recyclerView
+        progressBar = binding?.progressBar
         currentPage = 1
         itemBinder = ItemBinder(adapter, itemOnClick)
 
@@ -65,6 +69,9 @@ class MainController : BaseController() {
 
         val layoutManager = LinearLayoutManager(activity)
 
+        if (recyclerView?.itemAnimator is SimpleItemAnimator) {
+            (recyclerView?.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
         recyclerView?.setHasFixedSize(false)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = adapter
@@ -85,9 +92,11 @@ class MainController : BaseController() {
             Timber.d("Do nothing since now fetching...")
             return
         }
+        progressBar?.visibility = View.VISIBLE
         subscription = itemModel
                 .getItems(currentPage, LIMIT, "android")
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate { progressBar?.visibility = View.GONE }
                 .subscribe({ items ->
                     Timber.d(items[0].rendered_body)
                     itemBinder?.addDataSet(items)
