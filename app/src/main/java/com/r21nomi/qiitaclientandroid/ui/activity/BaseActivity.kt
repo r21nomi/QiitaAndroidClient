@@ -6,7 +6,6 @@ import com.r21nomi.qiitaclientandroid.Application
 import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerActivityComponent
-import com.r21nomi.qiitaclientandroid.di.module.ActivityModule
 import rx.subscriptions.CompositeSubscription
 
 abstract class BaseActivity: AppCompatActivity() {
@@ -22,7 +21,6 @@ abstract class BaseActivity: AppCompatActivity() {
 
         activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
-                .activityModule(ActivityModule(this))
                 .build()
 
         injectDependency(activityComponent!!)

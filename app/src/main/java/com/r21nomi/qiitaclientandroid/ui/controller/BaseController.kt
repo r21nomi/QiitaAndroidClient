@@ -8,7 +8,6 @@ import com.r21nomi.qiitaclientandroid.Application
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerControllerComponent
-import com.r21nomi.qiitaclientandroid.di.module.ControllerModule
 import rx.subscriptions.CompositeSubscription
 
 /**
@@ -26,7 +25,6 @@ abstract class BaseController : Controller() {
         controllerComponent = DaggerControllerComponent
                 .builder()
                 .applicationComponent(getApplicationComponent())
-                .controllerModule(ControllerModule())
                 .build()
 
         injectDependency(controllerComponent!!)
