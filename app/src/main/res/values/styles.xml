@@ -6,6 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.ButtonStyle">
+        <item name="colorButtonNormal">@color/white</item>
+    </style>
+
     <style name="AppTheme.ItemThumbStyle">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>

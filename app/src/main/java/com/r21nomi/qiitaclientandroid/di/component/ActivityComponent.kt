@@ -5,6 +5,7 @@ import com.r21nomi.qiitaclientandroid.di.module.ActivityModule
 import com.r21nomi.qiitaclientandroid.ui.activity.DetailActivity
 import com.r21nomi.qiitaclientandroid.ui.activity.LoginActivity
 import com.r21nomi.qiitaclientandroid.ui.activity.MainActivity
+import com.r21nomi.qiitaclientandroid.ui.activity.OAuthActivity
 import dagger.Component
 
 /**
@@ -16,7 +17,8 @@ import dagger.Component
         modules = arrayOf(ActivityModule::class)
 )
 interface ActivityComponent {
+    fun inject(activity: LoginActivity)
+    fun inject(activity: OAuthActivity)
     fun inject(activity: MainActivity)
     fun inject(activity: DetailActivity)
-    fun inject(activity: LoginActivity)
 }
