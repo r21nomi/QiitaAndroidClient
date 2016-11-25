@@ -1,5 +1,6 @@
 package com.r21nomi.qiitaclientandroid.ui.controller
 
+import android.databinding.DataBindingUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.r21nomi.qiitaclientandroid.R
+import com.r21nomi.qiitaclientandroid.databinding.ControllerMainBinding
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
 import com.r21nomi.qiitaclientandroid.model.ItemModel
 import com.r21nomi.qiitaclientandroid.model.entity.Item
@@ -24,6 +26,10 @@ import javax.inject.Inject
  */
 class MainController : BaseController() {
 
+    companion object {
+        val LIMIT = 20
+    }
+
     @Inject
     lateinit var itemModel: ItemModel
 
@@ -32,6 +38,7 @@ class MainController : BaseController() {
     private var recyclerView: RecyclerView? = null
     private var itemBinder: ItemBinder? = null
     private val adapter: ListBindAdapter = ListBindAdapter()
+    private var binding: ControllerMainBinding? = null
 
     override fun getLayout(): Int {
         return R.layout.controller_main
@@ -48,7 +55,9 @@ class MainController : BaseController() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = super.onCreateView(inflater, container)
 
-        recyclerView = view.findViewById(R.id.recyclerView) as RecyclerView
+        binding = DataBindingUtil.bind(view)
+
+        recyclerView = binding?.recyclerView
         currentPage = 1
         itemBinder = ItemBinder(adapter, itemOnClick)
 
@@ -77,7 +86,7 @@ class MainController : BaseController() {
             return
         }
         subscription = itemModel
-                .getItems(currentPage, 20, "android")
+                .getItems(currentPage, LIMIT, "android")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ items ->
                     Timber.d(items[0].rendered_body)
