@@ -12,20 +12,21 @@ import timber.log.Timber
  */
 open class Application: Application() {
 
-    var applicationComponent: ApplicationComponent? = null
+    private val applicationComponent: ApplicationComponent by lazy {
+        DaggerApplicationComponent
+                .builder()
+                .applicationModule(ApplicationModule(this))
+                .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
         Fresco.initialize(this)
-
-        initInjector()
     }
 
-    fun initInjector() {
-        applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
+    fun getComponent() : ApplicationComponent {
+        return applicationComponent
     }
 }

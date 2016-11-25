@@ -1,5 +1,6 @@
 package com.r21nomi.qiitaclientandroid.ui.controller
 
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import com.r21nomi.qiitaclientandroid.model.entity.Item
 import com.r21nomi.qiitaclientandroid.ui.activity.DetailActivity
 import com.r21nomi.qiitaclientandroid.ui.adapter.InfiniteScrollRecyclerListener
 import com.r21nomi.qiitaclientandroid.ui.adapter.ItemBinder
-import com.r21nomi.qiitaclientandroid.ui.adapter.decoration.DividerItemDecoration
 import com.yqritc.recyclerviewmultipleviewtypesadapter.ListBindAdapter
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -59,7 +59,7 @@ class MainController : BaseController() {
         recyclerView?.setHasFixedSize(false)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = adapter
-        recyclerView?.addItemDecoration(DividerItemDecoration(activity!!))
+        recyclerView?.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         recyclerView?.addOnScrollListener(object : InfiniteScrollRecyclerListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemCount: Int) {
                 fetchItems()
@@ -85,6 +85,8 @@ class MainController : BaseController() {
                     itemBinder?.notifyBinderDataSetChanged()
 
                     currentPage++
+                }, { throwable ->
+                    Timber.e(throwable, throwable.message)
                 })
 
         subscriptionsOnDestroy?.add(subscription)

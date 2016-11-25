@@ -40,6 +40,6 @@ abstract class BaseController : Controller() {
     }
 
     fun getApplicationComponent(): ApplicationComponent {
-        return (applicationContext as Application).applicationComponent!!
+        return (applicationContext as Application).getComponent()
     }
 }
