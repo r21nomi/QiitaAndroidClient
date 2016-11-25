@@ -23,6 +23,6 @@ class ItemModel {
     fun getItems(page: Int, perPage: Int, query: String): Observable<List<Item>> {
         return apiClient
                 .getItems(page, perPage, query)
-        .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
     }
 }

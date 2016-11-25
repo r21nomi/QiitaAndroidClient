@@ -3,6 +3,9 @@
     <string name="font_thin" translatable="false">fonts/mplus-1c-thin.ttf</string>
     <string name="font_light" translatable="false">fonts/mplus-1c-light.ttf</string>
     <string name="font_bold" translatable="false">fonts/texgyreadventor-bold.otf</string>
-    <string name="api_endpoint">http://qiita.com/api/</string>
-    <string name="access_token">ffd57ac06863d25af10a2bf533d6bed6108a87e3</string>
+    <string name="api_endpoint" translatable="false">http://qiita.com/api/</string>
+    <string name="client_id" translatable="false">e0e26d5a7ad2737e8ea315ee747ca70492837a2d</string>
+    <string name="client_secret" translatable="false">738ebfbf2f05b7ab5505cf7e6af74fdc53461e28</string>
+    <string name="oauth_path" translatable="false">v2/oauth/authorize</string>
+    <string name="oauth_redirect_url" translatable="false">https://github.com/r21nomi</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.r21nomi.qiitaclientandroid.model.api
 
+import com.r21nomi.qiitaclientandroid.model.entity.AuthInfo
 import com.r21nomi.qiitaclientandroid.model.entity.Item
 import com.r21nomi.qiitaclientandroid.model.entity.Tag
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 import rx.Observable
 
@@ -24,4 +26,11 @@ interface ApiClient {
             @Query("per_page") perPage: Int,
             @Query("sort") sort: String
     ): Observable<List<Tag>>
+
+    @POST("v2/access_tokens")
+    fun getAccessTokens(
+            @Query("client_id") clientId: String,
+            @Query("client_secret") clientSecret: String,
+            @Query("code") code: String
+    ): Observable<AuthInfo>
 }
