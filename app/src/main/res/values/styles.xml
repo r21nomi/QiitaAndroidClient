@@ -17,9 +17,17 @@
 
     <style name="AppTheme.ItemTextStyle.Title">
         <item name="android:textSize">16sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="AppTheme.ItemTextStyle.Body">
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AppTheme.ItemTextStyle.UserName">
         <item name="android:textSize">12sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
