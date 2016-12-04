@@ -1,6 +1,7 @@
 package com.r21nomi.qiitaclientandroid.ui.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.net.Uri
@@ -16,8 +17,10 @@ import javax.inject.Inject
 class OAuthActivity : BaseActivity() {
 
     companion object {
-        val KEY_CODE: String = "code"
+        val KEY_CODE = "code"
         val REQUEST_CODE = 10
+
+        fun createIntent(context: Context) = Intent(context, OAuthActivity::class.java)
     }
 
     @Inject

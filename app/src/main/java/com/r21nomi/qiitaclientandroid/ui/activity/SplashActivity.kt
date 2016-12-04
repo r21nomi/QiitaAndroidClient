@@ -1,6 +1,5 @@
 package com.r21nomi.qiitaclientandroid.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.r21nomi.qiitaclientandroid.R
@@ -12,21 +11,16 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val accessToken = getAccessToken(this)
-        if (accessToken != "") {
-            startMainActivity()
-        } else {
-            startLoginActivity()
-        }
+        getAccessToken(this)?.run { startMainActivity() } ?: startLoginActivity()
     }
 
     private fun startLoginActivity() {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(LoginActivity.createIntent(this))
         finish()
     }
 
     private fun startMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(MainActivity.createIntent(this))
         finish()
     }
 }

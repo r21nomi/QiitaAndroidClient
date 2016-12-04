@@ -9,14 +9,9 @@ import okhttp3.Response
 /**
  * Created by Ryota Niinomi on 2016/11/24.
  */
-class SigningInterceptor : Interceptor {
+class SigningInterceptor(val context: Context) : Interceptor {
 
-    val context: Context
-    var accessToken: String = ""
-
-    constructor(context: Context) {
-        this.context = context
-    }
+    var accessToken: String ?= null
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = addDefaultHeaders(chain.request().newBuilder())
@@ -28,10 +23,5 @@ class SigningInterceptor : Interceptor {
         return builder
     }
 
-    private fun getToken() : String {
-        if (accessToken == "") {
-            accessToken = getAccessToken(context)
-        }
-        return accessToken
-    }
+    private fun getToken() = accessToken ?: getAccessToken(context)
 }

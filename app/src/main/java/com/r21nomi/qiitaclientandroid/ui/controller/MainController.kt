@@ -3,12 +3,10 @@ package com.r21nomi.qiitaclientandroid.ui.controller
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.databinding.ControllerMainBinding
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
@@ -36,13 +34,15 @@ class MainController : BaseController() {
     @Inject
     lateinit var itemModel: ItemModel
 
+    private lateinit var binding: ControllerMainBinding
+
     private var currentPage: Int = 1
     private var subscription: Subscription? = null
-    private var recyclerView: RecyclerView? = null
-    private var progressBar: ProgressBar? = null
-    private var itemBinder: ItemBinder? = null
+
     private val adapter: ListBindAdapter = ListBindAdapter()
-    private lateinit var binding: ControllerMainBinding
+    private val itemBinder: ItemBinder by lazy {
+        ItemBinder(adapter, itemOnClick)
+    }
 
     override fun getLayout(): Int {
         return R.layout.controller_main
@@ -61,23 +61,22 @@ class MainController : BaseController() {
 
         binding = DataBindingUtil.bind(view)
 
-        recyclerView = binding.recyclerView
-        progressBar = binding.progressBar
+        val recyclerView = binding.recyclerView
+        val layoutManager = LinearLayoutManager(activity)
+
         currentPage = 1
-        itemBinder = ItemBinder(adapter, itemOnClick)
 
         adapter.addBinder(itemBinder)
 
-        val layoutManager = LinearLayoutManager(activity)
-
-        if (recyclerView?.itemAnimator is SimpleItemAnimator) {
-            (recyclerView?.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (recyclerView.itemAnimator as? SimpleItemAnimator)?.run {
+            supportsChangeAnimations = false
         }
-        recyclerView?.setHasFixedSize(false)
-        recyclerView?.layoutManager = layoutManager
-        recyclerView?.adapter = adapter
-        recyclerView?.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-        recyclerView?.addOnScrollListener(object : InfiniteScrollRecyclerListener(layoutManager) {
+
+        recyclerView.setHasFixedSize(false)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        recyclerView.addOnScrollListener(object : InfiniteScrollRecyclerListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemCount: Int) {
                 fetchItems()
             }
@@ -93,21 +92,23 @@ class MainController : BaseController() {
             Timber.d("Do nothing since now fetching...")
             return
         }
-        progressBar?.visibility = View.VISIBLE
+        val progressBar = binding.progressBar
+        progressBar.visibility = View.VISIBLE
+
         subscription = itemModel
                 .fetchItems(currentPage, LIMIT, "android")
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnTerminate { progressBar?.visibility = View.GONE }
-                .subscribe({ items ->
-                    Timber.d(items[0].rendered_body)
-                    itemBinder?.addDataSet(items)
-                    itemBinder?.notifyBinderDataSetChanged()
+                .doOnTerminate { progressBar.visibility = View.GONE }
+                .subscribe({
+                    Timber.d(it[0].rendered_body)
+                    itemBinder.addDataSet(it)
+                    itemBinder.notifyBinderDataSetChanged()
 
                     currentPage++
-                }, { throwable ->
+                }, {
                     ViewUtil.showSnackBar(
                             activity ?: return@subscribe,
-                            throwable.message ?: return@subscribe
+                            it.message ?: return@subscribe
                     )
                 })
 

@@ -15,19 +15,21 @@ import rx.subscriptions.CompositeSubscription
  */
 abstract class BaseController : Controller() {
 
-    private var controllerComponent: ControllerComponent? = null
+    private val controllerComponent by lazy {
+        DaggerControllerComponent
+                .builder()
+                .applicationComponent(getApplicationComponent())
+                .build()
+    }
+
     protected var subscriptionsOnDestroy: CompositeSubscription? = null
 
     protected abstract fun injectDependency(component: ControllerComponent)
     protected abstract fun getLayout() : Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        controllerComponent = DaggerControllerComponent
-                .builder()
-                .applicationComponent(getApplicationComponent())
-                .build()
 
-        injectDependency(controllerComponent!!)
+        injectDependency(controllerComponent)
 
         return inflater.inflate(getLayout(), container, false)
     }

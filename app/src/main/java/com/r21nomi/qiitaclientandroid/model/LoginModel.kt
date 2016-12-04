@@ -3,11 +3,10 @@ package com.r21nomi.qiitaclientandroid.model
 import android.content.Context
 import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.model.api.ApiClient
-import com.r21nomi.qiitaclientandroid.util.ApiUtil
+import com.r21nomi.qiitaclientandroid.util.getUrlWithQueryParams
 import rx.Observable
 import rx.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,13 +33,14 @@ class LoginModel @Inject constructor(val context: Context, val apiClient: ApiCli
             }
 
     fun getOAuthUrl(): String {
-        val param: MutableList<Pair<String, String>> = ArrayList()
-        param.add(Pair("client_id", context.getString(R.string.client_id)))
-        param.add(Pair("scope", "read_qiita write_qiita_team"))
+        val params = listOf(
+                "client_id" to context.getString(R.string.client_id),
+                "scope" to "read_qiita write_qiita_team"
+        )
 
-        return ApiUtil.getUrlWithQueryParams(
+        return getUrlWithQueryParams(
                 context.getString(R.string.api_endpoint) + context.getString(R.string.oauth_path),
-                param
+                params
         )
     }
 }
@@ -48,9 +48,9 @@ class LoginModel @Inject constructor(val context: Context, val apiClient: ApiCli
 val PREF_NAME = "login_model_pref"
 val PREF_KEY_ACCESS_TOKEN = "access_token"
 
-fun getAccessToken(context: Context) : String = context
+fun getAccessToken(context: Context) : String? = context
         .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        .getString(PREF_KEY_ACCESS_TOKEN, "")
+        .getString(PREF_KEY_ACCESS_TOKEN, null)
 
 fun setAccessToken(context: Context, accessToken: String) = context
         .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

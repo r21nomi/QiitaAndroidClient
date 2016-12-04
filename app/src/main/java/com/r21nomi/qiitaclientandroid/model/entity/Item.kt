@@ -3,7 +3,7 @@ package com.r21nomi.qiitaclientandroid.model.entity
 /**
  * Created by Ryota Niinomi on 2016/11/24.
  */
-class Item(
+data class Item(
         val id: String,
         val title: String,
         val rendered_body: String,

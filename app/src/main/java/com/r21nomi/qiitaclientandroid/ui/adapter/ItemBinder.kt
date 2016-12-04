@@ -48,11 +48,5 @@ class ItemBinder(dataBindAdapter: DataBindAdapter,
         this.dataSet.addAll(dataSet)
     }
 
-    inner class ViewHolder(binding: ItemViewholderBinding) : RecyclerView.ViewHolder(binding.root) {
-        val binding: ItemViewholderBinding
-
-        init {
-            this.binding = binding
-        }
-    }
+    inner class ViewHolder(val binding: ItemViewholderBinding) : RecyclerView.ViewHolder(binding.root)
 }

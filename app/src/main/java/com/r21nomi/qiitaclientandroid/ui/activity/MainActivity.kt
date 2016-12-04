@@ -1,9 +1,9 @@
 package com.r21nomi.qiitaclientandroid.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.view.MenuItem
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
@@ -15,9 +15,14 @@ import com.r21nomi.qiitaclientandroid.ui.controller.TagsController
 
 class MainActivity : BaseActivity() {
 
+    companion object {
+        fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
+    }
+
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
+
     private lateinit var router: Router
 
     override fun injectDependency(component: ActivityComponent) {
@@ -31,21 +36,19 @@ class MainActivity : BaseActivity() {
         initToolbar()
         initContent(savedInstanceState)
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                when(item.itemId) {
-                    R.id.top -> {
-                        router.setRoot(RouterTransaction.with(MainController()))
-                        return true
-                    }
-                    R.id.second -> {
-                        router.setRoot(RouterTransaction.with(TagsController()))
-                        return true
-                    }
-                    else -> return false
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.top -> {
+                    router.setRoot(RouterTransaction.with(MainController()))
+                    true
                 }
+                R.id.second -> {
+                    router.setRoot(RouterTransaction.with(TagsController()))
+                    true
+                }
+                else -> false
             }
-        })
+        }
     }
 
     override fun onBackPressed() {

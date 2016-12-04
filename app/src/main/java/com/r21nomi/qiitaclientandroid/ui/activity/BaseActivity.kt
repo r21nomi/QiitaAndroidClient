@@ -10,7 +10,11 @@ import rx.subscriptions.CompositeSubscription
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    private var activityComponent: ActivityComponent? = null
+    private val activityComponent by lazy {
+        DaggerActivityComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .build()
+    }
 
     protected var subscriptionsOnDestroy: CompositeSubscription? = null
 
@@ -19,11 +23,7 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        activityComponent = DaggerActivityComponent.builder()
-                .applicationComponent(getApplicationComponent())
-                .build()
-
-        injectDependency(activityComponent!!)
+        injectDependency(activityComponent)
     }
 
     fun getApplicationComponent(): ApplicationComponent {

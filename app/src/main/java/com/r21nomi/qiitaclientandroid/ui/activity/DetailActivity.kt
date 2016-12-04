@@ -13,14 +13,18 @@ class DetailActivity : BaseActivity() {
     companion object {
         private val URL = "url"
 
-        fun createIntent(context: Context, url: String): Intent {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(URL, url)
-            return intent
-        }
+        fun createIntent(context: Context, url: String) = Intent(context, DetailActivity::class.java)
+                .apply {
+                    putExtra(URL, url)
+                }
     }
 
-    var webView: WebView? = null
+    val webView by lazy {
+        (findViewById(R.id.webView) as WebView).apply {
+            setWebViewClient(WebViewClient())
+            settings?.javaScriptEnabled = true
+        }
+    }
 
     override fun injectDependency(component: ActivityComponent) {
         component.inject(this)
@@ -30,10 +34,6 @@ class DetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        webView = findViewById(R.id.webView) as WebView
-
-        webView?.setWebViewClient(WebViewClient())
-        webView?.loadUrl(intent.getStringExtra(URL))
-        webView?.settings?.javaScriptEnabled = true
+        intent.getStringExtra(URL)?.let { webView.loadUrl(it) }
     }
 }

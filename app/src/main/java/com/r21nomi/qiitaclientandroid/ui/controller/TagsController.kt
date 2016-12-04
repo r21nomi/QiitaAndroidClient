@@ -9,7 +9,6 @@ import com.r21nomi.qiitaclientandroid.databinding.ControllerTagsBinding
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
 import com.r21nomi.qiitaclientandroid.model.TagModel
 import com.r21nomi.qiitaclientandroid.util.ViewUtil
-import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -44,19 +43,13 @@ class TagsController : BaseController() {
         tagModel
                 .fetchTags(currentPage, LIMIT)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ tags ->
-                    val sum: String = Observable
-                            .from(tags)
-                            .map { tag -> tag.id }
-                            .reduce { s1: String?, s2: String? -> s1 + ", " + s2 }
-                            .toBlocking()
-                            .first()
-
+                .subscribe({
+                    val sum = it.map { it.id }.reduce { s1, s2 -> "$s1, $s2" }
                     binding.text.text = sum
-                }, { throwable ->
+                }, {
                     ViewUtil.showSnackBar(
                             activity ?: return@subscribe,
-                            throwable.message ?: return@subscribe
+                            it.message ?: return@subscribe
                     )
                 })
 
