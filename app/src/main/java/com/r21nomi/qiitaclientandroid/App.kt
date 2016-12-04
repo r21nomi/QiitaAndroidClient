@@ -10,7 +10,7 @@ import timber.log.Timber
 /**
  * Created by Ryota Niinomi on 2016/11/24.
  */
-open class Application: Application() {
+open class App : Application() {
 
     private val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent

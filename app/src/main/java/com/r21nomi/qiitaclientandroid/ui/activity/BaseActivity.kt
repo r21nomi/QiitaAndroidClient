@@ -2,7 +2,7 @@ package com.r21nomi.qiitaclientandroid.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.r21nomi.qiitaclientandroid.Application
+import com.r21nomi.qiitaclientandroid.App
 import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerActivityComponent
@@ -27,7 +27,7 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     fun getApplicationComponent(): ApplicationComponent {
-        return (application as Application).getComponent()
+        return (application as App).getComponent()
     }
 
     override fun onDestroy() {

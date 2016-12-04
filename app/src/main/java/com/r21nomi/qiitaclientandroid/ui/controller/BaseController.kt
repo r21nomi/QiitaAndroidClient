@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
-import com.r21nomi.qiitaclientandroid.Application
+import com.r21nomi.qiitaclientandroid.App
 import com.r21nomi.qiitaclientandroid.di.component.ApplicationComponent
 import com.r21nomi.qiitaclientandroid.di.component.ControllerComponent
 import com.r21nomi.qiitaclientandroid.di.component.DaggerControllerComponent
@@ -38,6 +38,6 @@ abstract class BaseController : Controller() {
     }
 
     fun getApplicationComponent(): ApplicationComponent {
-        return (applicationContext as Application).getComponent()
+        return (applicationContext as App).getComponent()
     }
 }

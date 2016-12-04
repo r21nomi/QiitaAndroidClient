@@ -1,6 +1,6 @@
 package com.r21nomi.qiitaclientandroid.di.component
 
-import com.r21nomi.qiitaclientandroid.Application
+import com.r21nomi.qiitaclientandroid.App
 import com.r21nomi.qiitaclientandroid.di.module.ApiModule
 import com.r21nomi.qiitaclientandroid.di.module.ApplicationModule
 import com.r21nomi.qiitaclientandroid.model.ItemModel
@@ -20,7 +20,7 @@ import javax.inject.Singleton
         )
 )
 interface ApplicationComponent {
-    fun inject(application: Application)
+    fun inject(app: App)
 
     fun itemModel(): ItemModel
     fun tagModel(): TagModel

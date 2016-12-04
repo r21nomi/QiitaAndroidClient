@@ -5,7 +5,7 @@ import com.facebook.stetho.Stetho
 /**
  * Created by Ryota Niinomi on 2016/11/23.
  */
-class DebugApplication: Application() {
+class DebugApp : App() {
     override fun onCreate() {
         super.onCreate()
 
