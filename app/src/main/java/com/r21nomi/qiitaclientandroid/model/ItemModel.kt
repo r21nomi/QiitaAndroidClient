@@ -14,24 +14,13 @@ import javax.inject.Singleton
  * Created by Ryota Niinomi on 2016/11/24.
  */
 @Singleton
-class ItemModel {
+class ItemModel @Inject constructor(val context: Context, val apiClient: ApiClient) {
 
-    private val context: Context
-    private val apiClient: ApiClient
-
-    @Inject
-    constructor(context: Context, apiClient: ApiClient) {
-        this.context = context
-        this.apiClient = apiClient
-    }
-
-    fun fetchItems(page: Int, perPage: Int, query: String): Observable<List<Item>> {
-        return apiClient
-                .getItems(page, perPage, query)
-                .subscribeOn(Schedulers.io())
-                .onErrorReturn { throwable ->
-                    Timber.e(throwable, throwable.message)
-                    throw IllegalStateException(context.resources.getString(R.string.error))
-                }
-    }
+    fun fetchItems(page: Int, perPage: Int, query: String): Observable<List<Item>> = apiClient
+            .getItems(page, perPage, query)
+            .subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                Timber.e(it, it.message)
+                throw IllegalStateException(context.resources.getString(R.string.error))
+            }
 }

@@ -9,13 +9,7 @@ import dagger.Provides
  * Created by Ryota Niinomi on 2016/11/24.
  */
 @Module
-class ApplicationModule {
-
-    val application: Application
-
-    constructor(application: Application) {
-        this.application = application
-    }
+class ApplicationModule(val application: Application) {
 
     @Provides
     fun provideApplication(): Application {

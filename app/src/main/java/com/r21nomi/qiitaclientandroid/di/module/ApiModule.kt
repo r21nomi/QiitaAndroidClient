@@ -23,12 +23,11 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(context: Context): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.HEADERS
-
         return OkHttpClient.Builder()
                 .addInterceptor(SigningInterceptor(context))
-                .addNetworkInterceptor(logging)
+                .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.HEADERS
+                })
                 .addNetworkInterceptor(StethoInterceptor())  // TODO: Use only for debug
                 .build()
     }

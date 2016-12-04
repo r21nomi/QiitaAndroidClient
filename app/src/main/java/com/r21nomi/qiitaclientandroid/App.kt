@@ -12,7 +12,7 @@ import timber.log.Timber
  */
 open class App : Application() {
 
-    private val applicationComponent: ApplicationComponent by lazy {
+    val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent
                 .builder()
                 .applicationModule(ApplicationModule(this))
@@ -24,9 +24,5 @@ open class App : Application() {
 
         Timber.plant(Timber.DebugTree())
         Fresco.initialize(this)
-    }
-
-    fun getComponent() : ApplicationComponent {
-        return applicationComponent
     }
 }

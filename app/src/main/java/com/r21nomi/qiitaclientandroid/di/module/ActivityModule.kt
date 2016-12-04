@@ -9,11 +9,5 @@ import dagger.Module
  * TODO: This might be unnecessary...
  */
 @Module
-class ActivityModule {
-
-    val activity: Activity
-
-    constructor(activity: Activity) {
-        this.activity = activity
-    }
+class ActivityModule(val activity: Activity) {
 }

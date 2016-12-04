@@ -15,49 +15,23 @@ import javax.inject.Singleton
  * Created by Ryota Niinomi on 2016/11/25.
  */
 @Singleton
-class LoginModel {
+class LoginModel @Inject constructor(val context: Context, val apiClient: ApiClient) {
 
-    companion object {
-        val PREF_NAME = "login_model_pref"
-        val PREF_KEY_ACCESS_TOKEN = "access_token"
-
-        fun getAccessToken(context: Context) : String {
-            val pref = context.getSharedPreferences(LoginModel.PREF_NAME, Context.MODE_PRIVATE)
-            return pref.getString(LoginModel.PREF_KEY_ACCESS_TOKEN, "")
-        }
-
-        fun setAccessToken(context: Context, accessToken: String) {
-            val pref = context.getSharedPreferences(LoginModel.PREF_NAME, Context.MODE_PRIVATE)
-            pref.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).commit()
-        }
-    }
-
-    private val context: Context
-    private val apiClient: ApiClient
-
-    @Inject
-    constructor(context: Context, apiClient: ApiClient) {
-        this.context = context
-        this.apiClient = apiClient
-    }
-
-    fun fetchAccessTokens(code: String): Observable<String> {
-        return apiClient
-                .getAccessTokens(
-                        context.getString(R.string.client_id),
-                        context.getString(R.string.client_secret),
-                        code
-                )
-                .subscribeOn(Schedulers.io())
-                .onErrorReturn { throwable ->
-                    Timber.e(throwable, throwable.message)
-                    throw IllegalStateException(context.resources.getString(R.string.error))
-                }
-                .map { authInfo ->
-                    LoginModel.setAccessToken(context, authInfo.token)
-                    return@map authInfo.token
-                }
-    }
+    fun fetchAccessTokens(code: String): Observable<String> = apiClient
+            .getAccessTokens(
+                    context.getString(R.string.client_id),
+                    context.getString(R.string.client_secret),
+                    code
+            )
+            .subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                Timber.e(it, it.message)
+                throw IllegalStateException(context.resources.getString(R.string.error))
+            }
+            .map {
+                setAccessToken(context, it.token)
+                it.token
+            }
 
     fun getOAuthUrl(): String {
         val param: MutableList<Pair<String, String>> = ArrayList()
@@ -70,3 +44,16 @@ class LoginModel {
         )
     }
 }
+
+val PREF_NAME = "login_model_pref"
+val PREF_KEY_ACCESS_TOKEN = "access_token"
+
+fun getAccessToken(context: Context) : String = context
+        .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        .getString(PREF_KEY_ACCESS_TOKEN, "")
+
+fun setAccessToken(context: Context, accessToken: String) = context
+        .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        .edit()
+        .putString(PREF_KEY_ACCESS_TOKEN, accessToken)
+        .commit()

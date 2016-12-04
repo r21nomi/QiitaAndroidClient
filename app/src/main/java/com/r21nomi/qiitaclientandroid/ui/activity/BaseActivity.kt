@@ -27,7 +27,7 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     fun getApplicationComponent(): ApplicationComponent {
-        return (application as App).getComponent()
+        return (application as App).applicationComponent
     }
 
     override fun onDestroy() {

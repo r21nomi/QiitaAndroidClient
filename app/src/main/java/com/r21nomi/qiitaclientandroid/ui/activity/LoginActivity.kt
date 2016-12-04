@@ -8,6 +8,8 @@ import com.r21nomi.qiitaclientandroid.R
 import com.r21nomi.qiitaclientandroid.databinding.ActivityLoginBinding
 import com.r21nomi.qiitaclientandroid.di.component.ActivityComponent
 import com.r21nomi.qiitaclientandroid.model.LoginModel
+import com.r21nomi.qiitaclientandroid.model.getAccessToken
+import com.r21nomi.qiitaclientandroid.model.setAccessToken
 import com.r21nomi.qiitaclientandroid.util.ViewUtil
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -30,7 +32,7 @@ class LoginActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         binding.loginButton.setOnClickListener {
-            val accessToken = LoginModel.getAccessToken(this)
+            val accessToken = getAccessToken(this)
             if (accessToken != "") {
                 startMainActivity()
             } else {
@@ -39,7 +41,7 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.startButton.setOnClickListener {
-            LoginModel.setAccessToken(this, getString(R.string.default_access_token))
+            setAccessToken(this, getString(R.string.default_access_token))
             startActivity(Intent(this, MainActivity::class.java))
         }
     }

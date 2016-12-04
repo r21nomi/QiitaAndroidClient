@@ -1,7 +1,7 @@
 package com.r21nomi.qiitaclientandroid.model.api
 
 import android.content.Context
-import com.r21nomi.qiitaclientandroid.model.LoginModel
+import com.r21nomi.qiitaclientandroid.model.getAccessToken
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -30,7 +30,7 @@ class SigningInterceptor : Interceptor {
 
     private fun getToken() : String {
         if (accessToken == "") {
-            accessToken = LoginModel.getAccessToken(context)
+            accessToken = getAccessToken(context)
         }
         return accessToken
     }

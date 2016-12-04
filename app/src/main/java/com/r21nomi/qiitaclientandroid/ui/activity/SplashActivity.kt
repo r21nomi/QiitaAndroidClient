@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.r21nomi.qiitaclientandroid.R
-import com.r21nomi.qiitaclientandroid.model.LoginModel
+import com.r21nomi.qiitaclientandroid.model.getAccessToken
 
 class SplashActivity : AppCompatActivity() {
 
@@ -12,7 +12,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val accessToken = LoginModel.getAccessToken(this)
+        val accessToken = getAccessToken(this)
         if (accessToken != "") {
             startMainActivity()
         } else {
